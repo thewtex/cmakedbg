@@ -1,1 +1,5 @@
 cmake_binary_build/
+src/cmakedbg/resources/
+venv/
+src/cmake_dbg.egg-info/
+.coverage
