@@ -19,7 +19,7 @@ if not os.path.exists(os.path.join(repo_dir, 'src', 'cmakedbg', 'resources', cma
     build_cmake.main()
 
 setup(
-    name = "cmake-dbg",
+    name = "cmakedbg",
     version = "0.0.0",
     packages = ['cmakedbg'],
     package_dir = {'':os.path.join(repo_dir, 'src')},
