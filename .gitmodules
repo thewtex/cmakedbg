@@ -1,0 +1,3 @@
+[submodule "submodules/cmake"]
+	path = submodules/cmake
+	url = git@github.com:thewtex/CMake.git
