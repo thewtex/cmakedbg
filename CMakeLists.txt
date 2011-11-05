@@ -17,11 +17,18 @@ add_custom_target( ReplicatePythonSourceTree ALL ${CMAKE_COMMAND} -P
   ${CMAKE_CURRENT_BINARY_DIR}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 
+# Shared library.
+if( CMAKE_COMPILER_IS_GNUCXX )
+  set( CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -fPIC )
+  set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -fPIC )
+endif()
+
 if( NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/submodules/cmake/.git )
   message( FATAL_ERROR "The CMake submodule was not found.  Please run
   git submodule --init update
 In the source tree." )
 endif()
+add_subdirectory( submodules )
 
 include_directories( ${CMAKEDBG_SOURCE_DIR}/include )
 
