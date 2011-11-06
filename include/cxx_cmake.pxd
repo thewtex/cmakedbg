@@ -1,4 +1,7 @@
-# The cmake class Cython declaration.
+"""The cmake class Cython declaration."""
+
+from libcpp.vector cimport vector
+from libcpp.string cimport string
 
 cdef enum MessageType:
     AUTHOR_WARNING,
@@ -13,3 +16,6 @@ cdef extern from "cmake.h":
         cmake()
         void SetHomeDirectory(char * dir)
         char * GetHomeDirectory()
+        void SetStartDirectory(char * dir)
+        char * GetStartDirectory()
+        int Run(vector[string] & args)

@@ -1,4 +1,11 @@
+import os
+import sys
+
+from libcpp.vector cimport vector
+from libcpp.string cimport string
+
 from cxx_cmake cimport cmake
+from cxx_cmSystemTools cimport cmSystemTools
 
 cdef class Debugger:
 
@@ -10,6 +17,20 @@ cdef class Debugger:
     def __dealloc__(self):
         del self.cmakeptr
 
-    def run_cmake(self):
-        print('home directory:')
-        print(self.cmakeptr.GetHomeDirectory())
+    def run_cmake(self, *args, argv0=sys.argv[0]):
+        """Run cmake with the given command line arguments."""
+
+        cdef vector[string] cmake_args
+        cdef char * c_argv0
+        c_argv0 = argv0
+        cmake_args.push_back(string(c_argv0))
+        cdef cmSystemTools cm_system_tools
+        # This is needed for CMake to orientate itself to where the invocation directory
+        # is located.
+        cm_system_tools.FindExecutableDirectory(c_argv0)
+        cdef char * c_str
+        for aa in args:
+            aa_str = str(aa)
+            c_str  = aa_str
+            cmake_args.push_back(string(c_str))
+        self.cmakeptr.Run(cmake_args)

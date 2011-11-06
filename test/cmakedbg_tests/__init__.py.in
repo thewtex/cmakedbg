@@ -1,0 +1,37 @@
+import glob
+import inspect
+import os
+import shutil
+
+# Remove the test CMake builds after finished testing.
+REMOVE_TEST_PROJECT_BUILDS = False
+
+test_projects_source_dir = '@TEST_PROJECTS_SOURCE_DIR@'
+test_projects_build_dir  = '@TEST_PROJECTS_BUILD_DIR@'
+
+def create_build_dir(test_function, project_name='code_trek', chdir=True):
+    """Creates a build directory for the test and set the current working directory
+    to the created directory if chdir is True.  It is important to have separate build
+    directories for parallel execution of tests.  The build directory is based
+    on the test function.
+
+    Returns the project source directory and project build directory."""
+    test_dir = str(test_function.im_class).replace('.', os.sep) + os.sep + \
+        str(test_function.__name__)
+    source_dir = os.path.join(test_projects_source_dir, project_name)
+    build_dir  = os.path.join(test_projects_build_dir, project_name, test_dir)
+    if not os.path.exists(build_dir):
+        shutil.os.makedirs(build_dir)
+    if chdir:
+        os.chdir(build_dir)
+
+    return source_dir, build_dir
+
+# For nose parallel test processing.
+_multiprocess_shared_ = True
+
+def teardown_package():
+    if REMOVE_TEST_PROJECT_BUILDS:
+        build_dirs = glob.glob(os.path.joint(test_projects_build_dir, '*'))
+        for path in build_dirs:
+            shutil.os.removedirs(path)

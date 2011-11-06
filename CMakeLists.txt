@@ -34,3 +34,8 @@ include_directories( ${CMAKEDBG_SOURCE_DIR}/include )
 
 add_subdirectory( src )
 add_subdirectory( bin )
+
+set( TEST_PROJECTS_SOURCE_DIR "${CMAKEDBG_SOURCE_DIR}/test/test_projects" )
+set( TEST_PROJECTS_BUILD_DIR  "${CMAKEDBG_BINARY_DIR}/test/test_projects" )
+configure_file( "${CMAKEDBG_SOURCE_DIR}/test/cmakedbg_tests/__init__.py.in"
+  "${CMAKEDBG_BINARY_DIR}/test/cmakedbg_tests/__init__.py" @ONLY )
