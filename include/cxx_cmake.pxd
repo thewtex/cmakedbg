@@ -18,4 +18,5 @@ cdef extern from "cmake.h":
         char * GetHomeDirectory()
         void SetStartDirectory(char * dir)
         char * GetStartDirectory()
+        void SetDebuggerCallback(void * f, void * clientData=*)
         int Run(vector[string] & args)

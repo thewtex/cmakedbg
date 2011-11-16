@@ -6,6 +6,10 @@ from libcpp.string cimport string
 
 from cxx_cmake cimport cmake
 from cxx_cmSystemTools cimport FindExecutableDirectory
+from cxx_cmListFileCache cimport cmListFileFunction
+
+cdef void debugger_callback(cmListFileFunction * lff, void * clientData) with gil:
+    print(str(lff.Name.c_str()))
 
 cdef class Debugger:
 
@@ -13,6 +17,7 @@ cdef class Debugger:
 
     def __cinit__(self):
         self.cmakeptr = new cmake()
+        self.cmakeptr.SetDebuggerCallback(&debugger_callback)
 
     def __dealloc__(self):
         del self.cmakeptr
@@ -33,3 +38,4 @@ cdef class Debugger:
             c_str  = aa_str
             cmake_args.push_back(string(c_str))
         self.cmakeptr.Run(cmake_args)
+
