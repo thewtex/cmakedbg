@@ -1,6 +1,4 @@
 """The cmSystemTools class Cython declaration."""
 
-cdef extern from "cmSystemTools.h":
-    cdef cppclass cmSystemTools:
-        cmSystemTools()
-        void FindExecutableDirectory(char * argv0)
+cdef extern from "cmSystemTools.h" namespace "cmSystemTools":
+    void FindExecutableDirectory(char * argv0)

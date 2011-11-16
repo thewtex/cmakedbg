@@ -5,7 +5,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 
 from cxx_cmake cimport cmake
-from cxx_cmSystemTools cimport cmSystemTools
+from cxx_cmSystemTools cimport FindExecutableDirectory
 
 cdef class Debugger:
 
@@ -24,10 +24,9 @@ cdef class Debugger:
         cdef char * c_argv0
         c_argv0 = argv0
         cmake_args.push_back(string(c_argv0))
-        cdef cmSystemTools cm_system_tools
         # This is needed for CMake to orientate itself to where the invocation directory
         # is located.
-        cm_system_tools.FindExecutableDirectory(c_argv0)
+        FindExecutableDirectory('cmake')
         cdef char * c_str
         for aa in args:
             aa_str = str(aa)

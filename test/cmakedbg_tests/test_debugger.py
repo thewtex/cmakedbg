@@ -17,5 +17,3 @@ class TestDebugger:
     def test_run_cmake(self):
         source_dir, build_dir = create_build_dir(self.test_run_cmake)
         self.debugger.run_cmake(source_dir)
-
-
