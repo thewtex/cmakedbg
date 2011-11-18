@@ -5,11 +5,11 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 
 from cxx_cmake cimport cmake
+from cxx_cmake cimport PyObject
 from cxx_cmSystemTools cimport FindExecutableDirectory
 from cxx_cmListFileCache cimport cmListFileFunction
 
-cdef void debugger_callback(cmListFileFunction * lff, void * clientData) with gil:
-    print(str(lff.Name.c_str()))
+from debugger_helper cimport set_cmake_python_debugger_callback
 
 cdef class Debugger:
 
@@ -17,7 +17,10 @@ cdef class Debugger:
 
     def __cinit__(self):
         self.cmakeptr = new cmake()
-        self.cmakeptr.SetDebuggerCallback(&debugger_callback)
+        cdef PyObject * py_self = <PyObject *> self
+
+    def __init__(self):
+        set_cmake_python_debugger_callback(self.cmakeptr, self)
 
     def __dealloc__(self):
         del self.cmakeptr
@@ -37,5 +40,14 @@ cdef class Debugger:
             aa_str = str(aa)
             c_str  = aa_str
             cmake_args.push_back(string(c_str))
-        self.cmakeptr.Run(cmake_args)
+        cdef cmake * my_cmakeptr = self.cmakeptr
+        with nogil:
+            my_cmakeptr.Run(cmake_args)
+
+    cdef void show(self, cmListFileFunction * lff):
+        print("hello world")
+
+cdef public void debugger_callback(cmListFileFunction * lff, object clientData) with gil:
+    cdef Debugger debugger = <Debugger> clientData
+    debugger.show(lff)
 
