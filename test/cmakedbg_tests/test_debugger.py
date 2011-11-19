@@ -14,6 +14,6 @@ class TestDebugger:
     def setUp(self):
         self.debugger = Debugger()
 
-    def test_run_cmake(self):
-        source_dir, build_dir = create_build_dir(self.test_run_cmake)
-        self.debugger.run_cmake(source_dir)
+    def test_run(self):
+        source_dir, build_dir = create_build_dir(self.test_run)
+        self.debugger.run(source_dir)

@@ -7,7 +7,7 @@ include_directories( ${CMAKEDBG_SOURCE_DIR}/include
 
 set_source_files_properties( debugger.pyx PROPERTIES CYTHON_IS_CXX TRUE )
 
-cython_add_module( debugger debugger.pyx debugger_helper.cxx
+cython_add_module( debugger debugger.pyx ${cmDebugger_SRCS}
   )
 target_link_libraries( debugger CMakeLib cmsys 
   ${CMAKE_EXPAT_LIBRARIES} ${CMAKE_ZLIB_LIBRARIES}

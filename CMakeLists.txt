@@ -19,7 +19,7 @@ add_custom_target( ReplicatePythonSourceTree ALL ${CMAKE_COMMAND} -P
 
 # Shared library.
 if( CMAKE_COMPILER_IS_GNUCXX )
-  set( CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -fPIC )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x" )
   set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -fPIC )
 endif()
 
