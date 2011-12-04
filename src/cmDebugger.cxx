@@ -4,15 +4,18 @@
 
 #include <iostream>
 
+#include "pythonDebuggerGetNextCommandCallback.h"
+
 cmDebugger
 ::cmDebugger():
   breakpointCount( 0 ),
-  cmakePtr( new cmake ),
   debuggerGetNextCommandCallback( NULL )
 {
   // This is needed for CMake to orientate itself to where the invocation directory
   // is located.
   cmSystemTools::FindExecutableDirectory( "cmake" );
+
+  cmakePtr = std::shared_ptr< cmake >( new cmake );
 
   this->cmakePtr->SetDebuggerCallback( &callback, static_cast<void *>(this) );
 }
@@ -49,5 +52,5 @@ cmDebugger
 {
   cmDebugger * self = static_cast< cmDebugger * >( clientData );
 
-  std::cout << "Line reached: " << listFileFunction->Line << " for " << listFileFunction->Name << " in " << listFileFunction->FilePath << std::endl;
+  (*(self->debuggerGetNextCommandCallback))( self->debuggerGetNextCommandCallbackClientData );
 }

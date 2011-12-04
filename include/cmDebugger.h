@@ -39,6 +39,8 @@ private:
   void *                             debuggerGetNextCommandCallbackClientData;
 
   BreakpointsType breakpoints;
+  // Gets incremented every time a breakpoint is set so there is always a unique
+  // default breakpoint name.
   unsigned int    breakpointCount;
 
   static void callback( const cmListFileFunction * listFileFunction, void * self );

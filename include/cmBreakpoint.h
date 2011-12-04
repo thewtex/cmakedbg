@@ -11,6 +11,8 @@ public:
   bool         enabled;
 
   cmBreakpoint(): lineNumber( 0 ), enabled( false ) {}
+
+  void print( std::iostream );
 };
 
 #endif
