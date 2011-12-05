@@ -26,12 +26,11 @@ public:
    * reached. */
   void SetDebuggerGetNextCommandCallback( DebuggerGetNextCommandCallbackType f, void * clientData );
 
-  /** Start up cmake with the given command line arguments. */
+  /** Start up cmake with the given command line arguments. Return non-zero on
+   * failure. */
   int Run(const std::vector<std::string> & args);
 
 private:
-
-  void LoadCache();
 
   std::shared_ptr< cmake > cmakePtr;
 

@@ -1,5 +1,6 @@
 set( cmDebugger_SRCS_FILENAMES
   pythonDebuggerGetNextCommandCallback.cxx
+  cmBreakpoint.cxx
   cmDebugger.cxx
   )
 set( cmDebugger_SRCS "" )

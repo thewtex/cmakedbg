@@ -18,6 +18,10 @@ cmDebugger
   cmakePtr = std::shared_ptr< cmake >( new cmake );
 
   this->cmakePtr->SetDebuggerCallback( &callback, static_cast<void *>(this) );
+
+  // By default, we always break after loading the cache.
+  BreakpointPtrType loadCacheBreakpoint( new cmBreakpoint( "CMakeCache.txt", 0 ));
+  this->breakpoints["LoadCache"] = loadCacheBreakpoint;
 }
 
 cmDebugger
@@ -37,13 +41,30 @@ int
 cmDebugger
 ::Run( const std::vector<std::string> & args )
 {
-  this->cmakePtr->Run( args );
-}
+  this->cmakePtr->SetArgs( args );
+  if(cmSystemTools::GetErrorOccuredFlag())
+    {
+    return -1;
+    }
+  this->cmakePtr->SetCMakeCommand( args[0].c_str() );
 
-void
-cmDebugger
-::LoadCache()
-{
+  if(this->cmakePtr->LoadCache() < 0)
+    {
+    cmSystemTools::Error("Error executing cmake::LoadCache(). Aborting.\n");
+    return -1;
+    }
+  if ( this->breakpoints["LoadCache"]->enabled )
+    {
+    (*(this->debuggerGetNextCommandCallback))( this->debuggerGetNextCommandCallbackClientData );
+    }
+
+  if ( !this->cmakePtr->SetCacheArgs(args) )
+    {
+    cmSystemTools::Error("Problem processing arguments. Aborting.\n");
+    return -1;
+    }
+
+  return this->cmakePtr->Configure();
 }
 
 void

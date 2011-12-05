@@ -10,9 +10,13 @@ public:
   unsigned int lineNumber;
   bool         enabled;
 
-  cmBreakpoint(): lineNumber( 0 ), enabled( false ) {}
+  cmBreakpoint();
+  cmBreakpoint( const std::string _file,
+                const unsigned int _lineNumber,
+                const bool _enabled = true );
+  cmBreakpoint & operator=( const cmBreakpoint & rhs );
 
-  void print( std::iostream );
+  void print( std::iostream & strm );
 };
 
 #endif
